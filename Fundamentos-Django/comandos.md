@@ -1,6 +1,9 @@
 ## Crear un projecto con django
 django-admin startproject <nombre_projecto>
 
+### Mostrar la versión de Django en la terminal
+pip show django
+
 ## Otra forma de crear un projecto django
 django-admin startproject config .
 
