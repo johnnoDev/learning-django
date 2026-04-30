@@ -1,9 +1,7 @@
 from django.urls import path
 from . import views
 
+# Ruta dinamica
 urlpatterns = [
-    path("hola-mundo", views.index),
-    path("lunes", views.lunes),
-    path("martes", views.martes),
-    path("miercoles", views.miercoles),
+    path('<dia>', views.dia_semana)
 ]

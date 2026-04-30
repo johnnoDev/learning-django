@@ -1,18 +1,17 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 
 # Create your views here.
 
-def index(request):
-    return HttpResponse("Hola mundo desde la Vista de Quote")
+# Crear una vista para una ruta dinamica
 
-# Creando mas Views como práctica
-def lunes(request):
-    return HttpResponse("Hola Lunes")
-
-def martes(request):
-    return HttpResponse("Hola Martes")
-
-def miercoles(request):
-    return HttpResponse("Hola Miercoles")
+def dia_semana(request, dia):
+    texto = None
+    if dia == "lunes":
+        texto = "Hola, desde el día Lunes"
+    elif dia == "martes":
+        texto = "Hola, desde el día martes"
+    else:
+        return HttpResponseNotFound("Día incorrecto. No existe")
     
+    return HttpResponse(texto)
