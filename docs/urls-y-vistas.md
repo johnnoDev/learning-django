@@ -185,6 +185,45 @@ def ver_articulo(request, titulo):
 
 ---
 
+## 56. Redirecciones con `HttpResponseRedirect`
+
+`HttpResponseRedirect` envía al navegador una respuesta HTTP 302, indicándole que navegue a otra URL. Es útil para convertir un parámetro (por ejemplo un número) en una ruta más descriptiva.
+
+### Ejemplo: número de día → nombre del día
+
+```python
+# urls.py — IMPORTANTE: <int:dia> debe ir antes que <dia> (str)
+urlpatterns = [
+    path('<int:dia>', views.dia_semana_numero),  # captura números
+    path('<dia>',     views.dia_semana),         # captura texto
+]
+```
+
+```python
+# views.py
+from django.http import HttpResponse, HttpResponseRedirect
+
+frase_dia = {
+    'lunes': 'Hoy es lunes',
+    'martes': 'Hoy es martes',
+    # ...
+}
+
+def dia_semana_numero(request, dia):
+    dias = list(frase_dia.keys())  # ['lunes', 'martes', ...]
+    if dia > len(dias):
+        return HttpResponse('El día no existe')
+    dia_rediccionar = dias[dia-1]  # dia=1 → índice 0 → 'lunes'
+    # Redirige al navegador a la ruta con el nombre del día (ej: /lunes)
+    return HttpResponseRedirect(f'/{dia_rediccionar}')
+```
+
+Flujo: `GET /1` → Django llama a `dia_semana_numero(dia=1)` → responde 302 hacia `/lunes` → navegador hace `GET /lunes` → `dia_semana` responde `"Hoy es lunes"`.
+
+> **Nota:** el orden de `urlpatterns` importa. Si `<dia>` (str) aparece antes que `<int:dia>`, los números son capturados como strings y la ruta entera nunca se alcanza.
+
+---
+
 ## Resumen del flujo completo
 
 ```
